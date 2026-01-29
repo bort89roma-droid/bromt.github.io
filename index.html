@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bromt | Кафе-бистро в Калининграде</title>
+  <!-- Шрифты и иконки -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Стили -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <p>Загрузка Bromt...</p>
+  </div>
+
+  <!-- Header -->
+  <header id="header">
+    <div class="container nav-container">
+      <a href="#home" class="logo">
+        <div class="logo-icon"></div>
+        Brom<span>t</span>
+      </a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#home" class="active"><i class="fas fa-home"></i> Главная</a></li>
+          <li><a href="#menu"><i class="fas fa-utensils"></i> Меню</a></li>
+          <li><a href="#about"><i class="fas fa-users"></i> О нас</a></li>
+          <li><a href="#booking"><i class="fas fa-calendar-check"></i> Бронирование</a></li>
+          <li><a href="#contact"><i class="fas fa-map-marker-alt"></i> Контакты</a></li>
+          <li><a href="#news"><i class="fas fa-bell"></i> Новости</a></li>
+          <li><a href="#reviews"><i class="fas fa-star"></i> Отзывы</a></li>
+          <li><a href="#cart"><i class="fas fa-shopping-cart"></i> Корзина</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <h1>Добро пожаловать в Bromt</h1>
+        <p>Уютное кафе-бистро в самом сердце Калининграда, где готовят с любовью и подают с улыбкой. Наше меню сочетает в себе классические блюда и современные тенденции кулинарии.</p>
+        <div class="hero-buttons">
+          <a href="#menu" class="btn">Посмотреть меню</a>
+          <a href="#booking" class="btn btn-secondary">Забронировать стол</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="module" id="news">
+      <div class="container">
+        <h2 class="section-title">Акции и специальные предложения</h2>
+        <div class="promo-grid" id="promoGrid"></div>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="module" id="menu">
+      <div class="container">
+        <h2 class="section-title">Наше меню</h2>
+        <div class="menu-categories">
+          <button class="category-btn active" data-category="all">Все</button>
+          <button class="category-btn" data-category="breakfast">Завтраки</button>
+          <button class="category-btn" data-category="salads">Салаты</button>
+          <button class="category-btn" data-category="main">Основные</button>
+          <button class="category-btn" data-category="desserts">Десерты</button>
+          <button class="category-btn" data-category="drinks">Напитки</button>
+        </div>
+        <div class="menu-grid" id="menuGrid"></div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="module" id="about">
+      <div class="container">
+        <h2 class="section-title">О нашем кафе</h2>
+        <div class="about-content">
+          <div class="about-text">
+            <h3>Наша история</h3>
+            <p>Bromt открыл свои двери в 2025 году с простой идеей — создавать вкусную, качественную еду в уютной атмосфере. Название "Bromt" происходит от слов "brot" (хлеб) и "moment" (момент), что символизирует особые моменты, которые мы создаем вокруг еды.</p>
+            <p>За эти годы мы выросли из небольшого бистро в одно из самых любимых мест в Калининграде, но сохранили нашу первоначальную философию: свежие местные продукты, внимательное отношение к деталям и гостеприимная атмосфера.</p>
+            <p>Наша команда — это опытные повара и дружелюбный персонал, которые любят свое дело и с радостью поделятся с вами своими знаниями и рекомендациями.</p>
+          </div>
+          <div class="about-img" style="background-image: url('images/about.jpg')"></div>
+        </div>
+        <h3 class="section-title">Наша команда</h3>
+        <div class="team-grid">
+          <div class="team-member">
+            <div class="team-member-img" style="background-image: url('images/team1.jpg')"></div>
+            <h4>Лев Рыльсий</h4>
+            <p>Шеф-повар</p>
+          </div>
+          <div class="team-member">
+            <div class="team-member-img" style="background-image: url('images/team2.jpg')"></div>
+            <h4>Роман Бортошевич</h4>
+            <p>Управляющий</p>
+          </div>
+          <div class="team-member">
+            <div class="team-member-img" style="background-image: url('images/team3.jpg')"></div>
+            <h4>Варвара Кузьмина</h4>
+            <p>Кондитер</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section class="module" id="booking">
+      <div class="container">
+        <h2 class="section-title">Забронировать стол</h2>
+        <div class="booking-form">
+          <form id="reservationForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Ваше имя *</label>
+                <input type="text" id="name" required />
+              </div>
+              <div class="form-group">
+                <label for="phone">Телефон *</label>
+                <input type="tel" id="phone" required placeholder="+7 (___) ___-__-__" maxlength="18" inputmode="numeric" />
+                <div id="phone-error" class="error-message"></div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="date">Дата *</label>
+                <input type="date" id="date" required />
+              </div>
+              <div class="form-group">
+                <label for="time">Время *</label>
+                <select id="time" required>
+                  <option value="">Выберите время</option>
+                  <option value="12:00">12:00</option>
+                  <option value="13:00">13:00</option>
+                  <option value="14:00">14:00</option>
+                  <option value="15:00">15:00</option>
+                  <option value="16:00">16:00</option>
+                  <option value="17:00">17:00</option>
+                  <option value="18:00">18:00</option>
+                  <option value="19:00">19:00</option>
+                  <option value="20:00">20:00</option>
+                  <option value="21:00">21:00</option>
+                  <option value="22:00">22:00</option>
+                  <option value="23:00">23:00</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="guests">Количество гостей *</label>
+                <select id="guests" required>
+                  <option value="">Выберите количество</option>
+                  <option value="1">1 человек</option>
+                  <option value="2">2 человека</option>
+                  <option value="3">3 человека</option>
+                  <option value="4">4 человека</option>
+                  <option value="5">5 человек</option>
+                  <option value="6">6 человек</option>
+                  <option value="7">7 человек</option>
+                  <option value="8">8 и более человек</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="occasion">Повод</label>
+                <select id="occasion">
+                  <option value="">Не выбрано</option>
+                  <option value="birthday">День рождения</option>
+                  <option value="anniversary">Годовщина</option>
+                  <option value="business">Деловая встреча</option>
+                  <option value="romantic">Романтический ужин</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="notes">Особые пожелания</label>
+              <textarea id="notes" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn" style="width: 100%;">Забронировать стол</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacts Section -->
+    <section class="module" id="contact">
+      <div class="container">
+        <h2 class="section-title">Контакты</h2>
+        <div class="contact-container">
+          <div class="contact-info">
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h4>Адрес</h4>
+                <p>г. Калининград, ул. Октябрьская, д. 15</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div>
+                <h4>Телефон</h4>
+                <p>+7 (4012) 345-678</p>
+                <p>+7 (911) 123-45-67</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div>
+                <h4>Часы работы</h4>
+                <p>Пн-Чт: 9:00 - 23:00</p>
+                <p>Пт-Сб: 9:00 - 00:00</p>
+                <p>Вс: 10:00 - 22:00</p>
+              </div>
+            </div>
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <h4>Email</h4>
+                <p>hello@bromt.ru</p>
+                <p>booking@bromt.ru</p>
+              </div>
+            </div>
+          </div>
+          <div class="map">
+            <div id="yandex-map" style="width: 100%; height: 400px;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="module" id="reviews">
+      <div class="container">
+        <h2 class="section-title">Отзывы наших гостей</h2>
+        <div class="reviews-slider" id="reviewsSlider">
+          <div class="review slide active">
+            <div class="review-text">
+              "Отличное место с уютной атмосферой! Бранч в воскресенье стал нашей семейной традицией. Особенно хочу отметить десерты — они просто восхитительны!"
+            </div>
+            <div class="review-author">
+              <div class="review-author-img" style="background-image: url('images/review1.jpg')"></div>
+              <div>
+                <div class="review-author-name">Мария Соколова</div>
+                <div>Постоянный гость</div>
+              </div>
+            </div>
+          </div>
+          <div class="review slide">
+            <div class="review-text">
+              "Пришли на день рождения подруги — всё было идеально! Внимательный персонал, вкусная еда и красивая подача. Обязательно вернёмся!"
+            </div>
+            <div class="review-author">
+              <div class="review-author-img" style="background-image: url('images/review2.jpg')"></div>
+              <div>
+                <div class="review-author-name">Алексей Иванов</div>
+                <div>Гость из Москвы</div>
+              </div>
+            </div>
+          </div>
+          <div class="review slide">
+            <div class="review-text">
+              "Лучшее кафе в Калининграде! Кофе — как в Париже, а брускетты — просто божественные. Уютно, спокойно, без суеты. Рекомендую всем!"
+            </div>
+            <div class="review-author">
+              <div class="review-author-img" style="background-image: url('images/review3.jpg')"></div>
+              <div>
+                <div class="review-author-name">Екатерина Морозова</div>
+                <div>Блогер, любитель кофе</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-arrows">
+          <button class="slider-arrow prev" aria-label="Предыдущий отзыв">&lt;</button>
+          <button class="slider-arrow next" aria-label="Следующий отзыв">&gt;</button>
+        </div>
+        <div class="slider-nav" id="sliderNav">
+          <div class="slider-dot active" data-index="0"></div>
+          <div class="slider-dot" data-index="1"></div>
+          <div class="slider-dot" data-index="2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CART SECTION -->
+    <section class="module" id="cart">
+      <div class="container">
+        <h2 class="section-title">Ваш заказ</h2>
+        <div id="cartContent">
+          <p>Ваша корзина пуста.</p>
+        </div>
+        <div id="cartTotal" style="text-align: right; font-size: 1.25rem; margin-top: 1.5rem; font-weight: 600;"></div>
+        <div class="cart-actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button class="btn" id="checkoutBtn">Оформить заказ</button>
+          <button class="btn btn-secondary" id="clearCartBtn">Очистить корзину</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- АДМИН-ПАНЕЛЬ (скрыта по умолчанию) -->
+    <section class="module" id="admin-section" style="display: none;">
+      <div class="container">
+        <h2 class="section-title">Панель администратора</h2>
+        <div id="ordersList">
+          <p>Нет заказов</p>
+        </div>
+        <button id="logoutAdminBtn" class="btn btn-secondary" style="margin-top: 1.5rem;">Выйти</button>
+      </div>
+    </section>
+
+    <!-- КНОПКА ВХОДА В АДМИНКУ -->
+    <div class="container" style="text-align: center; margin: 2rem 0;">
+      <button id="adminBtn" class="btn btn-outline">Войти как администратор</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-col">
+          <h3>Bromt</h3>
+          <p>Уютное кафе-бистро в самом сердце Калининграда. Мы готовим с любовью и подаем с улыбкой.</p>
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3>Навигация</h3>
+          <ul class="footer-links">
+            <li><a href="#home">Главная</a></li>
+            <li><a href="#menu">Меню</a></li>
+            <li><a href="#about">О нас</a></li>
+            <li><a href="#booking">Бронирование</a></li>
+            <li><a href="#contact">Контакты</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Контакты</h3>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt"></i> г. Калининград, ул. Октябрьская, д. 15</li>
+            <li><i class="fas fa-phone"></i> +7 (4012) 345-678</li>
+            <li><i class="fas fa-envelope"></i> hello@bromt.ru</li>
+            <li><i class="fas fa-clock"></i> Пн-Вс: 9:00 - 23:00</li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; <span id="current-year">2023</span> Bromt. Все права защищены. Сайт разработан как демонстрационный макет.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Yandex Maps API -->
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+  <script>
+    ymaps.ready(init);
+    function init() {
+      const myMap = new ymaps.Map('yandex-map', {
+        center: [54.703806, 20.518069],
+        zoom: 17,
+        controls: ['zoomControl', 'fullscreenControl']
+      });
+      const myPlacemark = new ymaps.Placemark([54.703806, 20.518069], {
+        hintContent: 'Bromt — кафе-бистро',
+        balloonContent: 'Октябрьская улица, 15, Калининград, 236006'
+      }, {
+        preset: 'islands#brownCircleIcon'
+      });
+      myMap.geoObjects.add(myPlacemark);
+    }
+  </script>
+
+  <!-- Подключаем скрипты -->
+  <script src="js/script.js"></script>
+</body>
+</html>
