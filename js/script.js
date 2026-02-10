@@ -133,7 +133,7 @@ function renderAdminPanel() {
 // === ИНИЦИАЛИЗАЦИЯ ===
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('current-year').textContent = new Date().getFullYear();
-  setTimeout(() => document.getElementById('loader')?.classList.remove('active'), 1000);
+  setTimeout(() => document.getElementById('loader')?.classList.remove('active'), 00);
 
   initNavigation();
   initPromotions();
@@ -257,7 +257,7 @@ function initBookingForm() {
   function validatePhone() {
     if (!phoneInput || !phoneError) return true;
     const digits = phoneInput.value.replace(/\D/g, '');
-    const isValid = digits.length >= 10 && digits.length <= 11;
+    const isValid = digits.length >= 11 && digits.length <= 11;
     if (!isValid && digits.length > 0) {
       phoneError.textContent = 'Номер не дописан';
     } else {
@@ -417,4 +417,5 @@ function initAdmin() {
     isAdmin = false;
     adminSection.style.display = 'none';
   });
+
 }
