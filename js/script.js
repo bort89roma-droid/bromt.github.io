@@ -4,7 +4,6 @@ const CONFIG = {
   TG_CHAT_ID:   "8216979888"
 };
 
-
 const ADMIN_PASSWORD_HASH = 'd6df30fec1bc880bdc03a4babf3b995f7cb7993a6a7da78fdb11cdef532c6687';
 
 let loginAttempts    = 0;
