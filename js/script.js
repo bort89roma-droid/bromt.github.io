@@ -586,13 +586,13 @@ function initReviewsSlider() {
     slides.forEach(s => s.classList.remove('active'));
     dots.forEach(d  => d.classList.remove('active'));
     slides[index].classList.add('active');
-    dots[index].classList.add('active');
+    if (dots[index]) dots[index].classList.add('active');
     currentIndex = index;
   }
 
-  prevBtn?.addEventListener('click', () => showSlide((currentIndex - 1 + slides.length) % slides.length));
-  nextBtn?.addEventListener('click', () => showSlide((currentIndex + 1) % slides.length));
-  dots.forEach(dot => dot.addEventListener('click', () => showSlide(parseInt(dot.dataset.index))));
+  if (prevBtn) prevBtn.onclick = () => showSlide((currentIndex - 1 + slides.length) % slides.length);
+  if (nextBtn) nextBtn.onclick = () => showSlide((currentIndex + 1) % slides.length);
+  dots.forEach(dot => { dot.onclick = () => showSlide(parseInt(dot.dataset.index)); });
 }
 
 // ============================================================
