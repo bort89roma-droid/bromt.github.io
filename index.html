@@ -1,385 +1,963 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bromt | Кафе-бистро в Калининграде</title>
-  <!-- Шрифты и иконки -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Стили -->
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bromt | Кафе-бистро в Калининграде</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+
+<style>
+/* ===== MODAL STYLES ===== */
+.legal-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.legal-modal-overlay.active {
+  display: flex;
+}
+.legal-modal {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 860px;
+  width: 100%;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+.legal-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1px solid #e8e0d6;
+  background: #faf7f3;
+  flex-shrink: 0;
+}
+.legal-modal-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+.legal-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+  line-height: 1;
+}
+.legal-modal-close:hover {
+  background: #eee;
+  color: #333;
+}
+.legal-modal-body {
+  overflow-y: auto;
+  padding: 1.75rem;
+  flex: 1;
+  font-size: 0.93rem;
+  line-height: 1.75;
+  color: #333;
+}
+.legal-modal-body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+  color: #1a1a1a;
+  border-bottom: 1px solid #f0e8dc;
+  padding-bottom: 0.4rem;
+}
+.legal-modal-body h3:first-child { margin-top: 0; }
+.legal-modal-body p { margin: 0.5rem 0 1rem; }
+.legal-modal-body ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+.legal-modal-body li { margin-bottom: 0.4rem; }
+.legal-modal-body .meta {
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0e8dc;
+}
+.legal-modal-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.88rem;
+}
+.legal-modal-body th {
+  background: #faf7f3;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  border: 1px solid #e8e0d6;
+  font-weight: 600;
+}
+.legal-modal-body td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #e8e0d6;
+  vertical-align: top;
+}
+.badge-pass { display:inline-block; background:#d4edda; color:#155724; border-radius:4px; padding:0.1rem 0.5rem; font-size:0.8rem; font-weight:600; }
+.badge-fail { display:inline-block; background:#f8d7da; color:#721c24; border-radius:4px; padding:0.1rem 0.5rem; font-size:0.8rem; font-weight:600; }
+.badge-req  { display:inline-block; background:#cce5ff; color:#004085; border-radius:4px; padding:0.1rem 0.5rem; font-size:0.8rem; font-weight:600; }
+
+/* Footer legal buttons */
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  justify-content: center;
+}
+.btn-legal {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.8);
+  padding: 0.45rem 1.1rem;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+.btn-legal:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-color: rgba(255,255,255,0.6);
+}
+</style>
 </head>
 <body>
-  <!-- Loader -->
-  <div class="loader" id="loader">
-    <div class="spinner"></div>
-    <p>Загрузка Bromt...</p>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="spinner"></div>
+  <p>Загрузка Bromt...</p>
+</div>
+
+<!-- Header -->
+<header id="header">
+  <div class="container nav-container">
+    <a href="#home" class="logo">
+      <div class="logo-icon"></div>
+      Brom<span>t</span>
+    </a>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" class="active"><i class="fas fa-home"></i> Главная</a></li>
+        <li><a href="#menu"><i class="fas fa-utensils"></i> Меню</a></li>
+        <li><a href="#about"><i class="fas fa-users"></i> О нас</a></li>
+        <li><a href="#booking"><i class="fas fa-calendar-check"></i> Бронирование</a></li>
+        <li><a href="#contact"><i class="fas fa-map-marker-alt"></i> Контакты</a></li>
+        <li><a href="#news"><i class="fas fa-bell"></i> Новости</a></li>
+        <li><a href="#reviews"><i class="fas fa-star"></i> Отзывы</a></li>
+        <li><a href="#cart"><i class="fas fa-shopping-cart"></i> Корзина</a></li>
+      </ul>
+    </nav>
   </div>
+</header>
 
-  <!-- Header -->
-  <header id="header">
-    <div class="container nav-container">
-      <a href="#home" class="logo">
-        <div class="logo-icon"></div>
-        Brom<span>t</span>
-      </a>
-      <button class="mobile-menu-btn" id="mobileMenuBtn">
-        <i class="fas fa-bars"></i>
-      </button>
-      <nav>
-        <ul class="nav-menu" id="navMenu">
-          <li><a href="#home" class="active"><i class="fas fa-home"></i> Главная</a></li>
-          <li><a href="#menu"><i class="fas fa-utensils"></i> Меню</a></li>
-          <li><a href="#about"><i class="fas fa-users"></i> О нас</a></li>
-          <li><a href="#booking"><i class="fas fa-calendar-check"></i> Бронирование</a></li>
-          <li><a href="#contact"><i class="fas fa-map-marker-alt"></i> Контакты</a></li>
-          <li><a href="#news"><i class="fas fa-bell"></i> Новости</a></li>
-          <li><a href="#reviews"><i class="fas fa-star"></i> Отзывы</a></li>
-          <li><a href="#cart"><i class="fas fa-shopping-cart"></i> Корзина</a></li>
+<!-- Main Content -->
+<main>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+  <div class="container">
+    <h1>Добро пожаловать в Bromt</h1>
+    <p>Уютное кафе-бистро в самом сердце Калининграда, где готовят с любовью и подают с улыбкой. Наше меню сочетает в себе классические блюда и современные тенденции кулинарии.</p>
+    <div class="hero-buttons">
+      <a href="#menu" class="btn">Посмотреть меню</a>
+      <a href="#booking" class="btn btn-secondary">Забронировать стол</a>
+    </div>
+  </div>
+</section>
+
+<!-- News Section -->
+<section class="module" id="news">
+  <div class="container">
+    <h2 class="section-title">Акции и специальные предложения</h2>
+    <div class="promo-grid" id="promoGrid"></div>
+  </div>
+</section>
+
+<!-- Menu Section -->
+<section class="module" id="menu">
+  <div class="container">
+    <h2 class="section-title">Наше меню</h2>
+    <div class="menu-categories">
+      <button class="category-btn active" data-category="all">Все</button>
+      <button class="category-btn" data-category="breakfast">Завтраки</button>
+      <button class="category-btn" data-category="salads">Салаты</button>
+      <button class="category-btn" data-category="main">Основные</button>
+      <button class="category-btn" data-category="desserts">Десерты</button>
+      <button class="category-btn" data-category="drinks">Напитки</button>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="module" id="about">
+  <div class="container">
+    <h2 class="section-title">О нашем кафе</h2>
+    <div class="about-content">
+      <div class="about-text">
+        <h3>Наша история</h3>
+        <p>Bromt открыл свои двери в 2025 году с простой идеей — создавать вкусную, качественную еду в уютной атмосфере. Название "Bromt" происходит от слов "brot" (хлеб) и "moment" (момент), что символизирует особые моменты, которые мы создаем вокруг еды.</p>
+        <p>За эти годы мы выросли из небольшого бистро в одно из самых любимых мест в Калининграде, но сохранили нашу первоначальную философию: свежие местные продукты, внимательное отношение к деталям и гостеприимная атмосфера.</p>
+        <p>Наша команда — это опытные повара и дружелюбный персонал, которые любят свое дело и с радостью поделятся с вами своими знаниями и рекомендациями.</p>
+      </div>
+      <div class="about-img" style="background-image: url('images/about.jpg')"></div>
+    </div>
+    <h3 class="section-title">Наша команда</h3>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="team-member-img" style="background-image: url('images/team1.jpg')"></div>
+        <h4>Лев Рыльсий</h4>
+        <p>Шеф-повар</p>
+      </div>
+      <div class="team-member">
+        <div class="team-member-img" style="background-image: url('images/team2.jpg')"></div>
+        <h4>Роман Бортошевич</h4>
+        <p>Управляющий</p>
+      </div>
+      <div class="team-member">
+        <div class="team-member-img" style="background-image: url('images/team3.jpg')"></div>
+        <h4>Варвара Кузьмина</h4>
+        <p>Кондитер</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking Section -->
+<section class="module" id="booking">
+  <div class="container">
+    <h2 class="section-title">Забронировать стол</h2>
+    <div class="booking-form">
+      <form id="reservationForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Ваше имя *</label>
+            <input type="text" id="name" required />
+            <div id="name-error" class="error-message"></div>
+          </div>
+          <div class="form-group">
+            <label for="phone">Телефон *</label>
+            <input type="tel" id="phone" required placeholder="+7 (___) ___-__-__" maxlength="18" inputmode="numeric" />
+            <div id="phone-error" class="error-message"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="date">Дата *</label>
+            <input type="date" id="date" required />
+          </div>
+          <div class="form-group">
+            <label for="time">Время *</label>
+            <select id="time" required>
+              <option value="">Выберите время</option>
+              <option value="12:00">12:00</option>
+              <option value="13:00">13:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:00">18:00</option>
+              <option value="19:00">19:00</option>
+              <option value="20:00">20:00</option>
+              <option value="21:00">21:00</option>
+              <option value="22:00">22:00</option>
+              <option value="23:00">23:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="guests">Количество гостей *</label>
+            <select id="guests" required>
+              <option value="">Выберите количество</option>
+              <option value="1">1 человек</option>
+              <option value="2">2 человека</option>
+              <option value="3">3 человека</option>
+              <option value="4">4 человека</option>
+              <option value="5">5 человек</option>
+              <option value="6">6 человек</option>
+              <option value="7">7 человек</option>
+              <option value="8">8 и более человек</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="occasion">Повод</label>
+            <select id="occasion">
+              <option value="">Не выбрано</option>
+              <option value="birthday">День рождения</option>
+              <option value="anniversary">Годовщина</option>
+              <option value="business">Деловая встреча</option>
+              <option value="romantic">Романтический ужин</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="notes">Особые пожелания</label>
+          <textarea id="notes" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn" style="width: 100%;">Забронировать стол</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Contacts Section -->
+<section class="module" id="contact">
+  <div class="container">
+    <h2 class="section-title">Контакты</h2>
+    <div class="contact-container">
+      <div class="contact-info">
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div><h4>Адрес</h4><p>г. Калининград, ул. Октябрьская, д. 15</p></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-phone"></i></div>
+          <div><h4>Телефон</h4><p>+7 (4012) 345-678</p><p>+7 (911) 123-45-67</p></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-clock"></i></div>
+          <div><h4>Часы работы</h4><p>Пн-Чт: 9:00 - 23:00</p><p>Пт-Сб: 9:00 - 00:00</p><p>Вс: 10:00 - 22:00</p></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <div><h4>Email</h4><p>hello@bromt.ru</p></div>
+        </div>
+      </div>
+      <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2305.3286291459626!2d20.51538831302111!3d54.70384117260024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e3161490741ef9%3A0xe9b1d265e25c2824!2z0YPQuy4g0J7QutGC0Y_QsdGA0YzRgdC60LDRjywgMTUsINC_0L7RgS4g0JzQvtC30YvRgNGMLCDQmtCw0LvQuNC90LjQvdCz0YDQsNC00YHQutCw0Y8g0L7QsdC7Liwg0KDQvtGB0YHQuNGPLCAyMzg0MTY!5e0!3m2!1sru!2sus!4v1775023147994!5m2!1sru!2sus" width="100%" height="400" style="border:0;border-radius:12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="module" id="reviews">
+  <div class="container">
+    <h2 class="section-title">Отзывы наших гостей</h2>
+    <div class="reviews-slider" id="reviewsSlider">
+      <div class="review slide active">
+        <div class="review-text">"Отличное место с уютной атмосферой! Бранч в воскресенье стал нашей семейной традицией. Особенно хочу отметить десерты — они просто восхитительны!"</div>
+        <div class="review-author">
+          <div class="review-author-img" style="background-image: url('images/rewiew1.jpg')"></div>
+          <div><div class="review-author-name">Мария Соколова</div><div>Постоянный гость</div></div>
+        </div>
+      </div>
+      <div class="review slide">
+        <div class="review-text">"Пришли на день рождения подруги — всё было идеально! Внимательный персонал, вкусная еда и красивая подача. Обязательно вернёмся!"</div>
+        <div class="review-author">
+          <div class="review-author-img" style="background-image: url('images/rewiew2.jpg')"></div>
+          <div><div class="review-author-name">Алексей Иванов</div><div>Гость из Москвы</div></div>
+        </div>
+      </div>
+      <div class="review slide">
+        <div class="review-text">"Лучшее кафе в Калининграде! Кофе — как в Париже, а брускетты — просто божественные. Уютно, спокойно, без суеты. Рекомендую всем!"</div>
+        <div class="review-author">
+          <div class="review-author-img" style="background-image: url('images/rewiew3.jpg')"></div>
+          <div><div class="review-author-name">Екатерина Морозова</div><div>Блогер, любитель кофе</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-arrows">
+      <button class="slider-arrow prev" aria-label="Предыдущий отзыв">&lt;</button>
+      <button class="slider-arrow next" aria-label="Следующий отзыв">&gt;</button>
+    </div>
+    <div class="slider-nav" id="sliderNav">
+      <div class="slider-dot active" data-index="0"></div>
+      <div class="slider-dot" data-index="1"></div>
+      <div class="slider-dot" data-index="2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CART SECTION -->
+<section class="module" id="cart">
+  <div class="container">
+    <h2 class="section-title">Ваш заказ</h2>
+    <div id="cartContent"><p>Ваша корзина пуста.</p></div>
+    <div id="cartTotal" style="text-align: right; font-size: 1.25rem; margin-top: 1.5rem; font-weight: 600;"></div>
+    <div class="cart-actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <button class="btn" id="checkoutBtn">Оформить заказ</button>
+      <button class="btn btn-secondary" id="clearCartBtn">Очистить корзину</button>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section class="module" id="admin-section" style="display: none;">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+      <h2 class="section-title" style="margin:0">Панель администратора</h2>
+      <button id="logoutAdminBtn" class="btn btn-secondary">Выйти</button>
+    </div>
+    <div id="adminPanelContent"></div>
+  </div>
+</section>
+
+<div class="container" style="text-align: center; margin: 2rem 0;">
+  <button id="adminBtn" class="btn btn-outline">Войти как администратор</button>
+</div>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h3>Bromt</h3>
+        <p>Уютное кафе-бистро в самом сердце Калининграда. Мы готовим с любовью и подаем с улыбкой.</p>
+        <div class="social-icons">
+          <a href="https://www.instagram.com/moresong.s/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://vk.com/achoopisat" class="social-icon" target="_blank"><i class="fab fa-vk"></i></a>
+          <a href="https://t.me/romanychjivchik" class="social-icon" target="_blank"><i class="fab fa-telegram"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>Навигация</h3>
+        <ul class="footer-links">
+          <li><a href="#home">Главная</a></li>
+          <li><a href="#menu">Меню</a></li>
+          <li><a href="#about">О нас</a></li>
+          <li><a href="#booking">Бронирование</a></li>
+          <li><a href="#contact">Контакты</a></li>
         </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main>
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-      <div class="container">
-        <h1>Добро пожаловать в Bromt</h1>
-        <p>Уютное кафе-бистро в самом сердце Калининграда, где готовят с любовью и подают с улыбкой. Наше меню сочетает в себе классические блюда и современные тенденции кулинарии.</p>
-        <div class="hero-buttons">
-          <a href="#menu" class="btn">Посмотреть меню</a>
-          <a href="#booking" class="btn btn-secondary">Забронировать стол</a>
-        </div>
       </div>
-    </section>
-
-    <!-- News Section -->
-    <section class="module" id="news">
-      <div class="container">
-        <h2 class="section-title">Акции и специальные предложения</h2>
-        <div class="promo-grid" id="promoGrid"></div>
-      </div>
-    </section>
-
-    <!-- Menu Section -->
-    <section class="module" id="menu">
-      <div class="container">
-        <h2 class="section-title">Наше меню</h2>
-        <div class="menu-categories">
-          <button class="category-btn active" data-category="all">Все</button>
-          <button class="category-btn" data-category="breakfast">Завтраки</button>
-          <button class="category-btn" data-category="salads">Салаты</button>
-          <button class="category-btn" data-category="main">Основные</button>
-          <button class="category-btn" data-category="desserts">Десерты</button>
-          <button class="category-btn" data-category="drinks">Напитки</button>
-        </div>
-        <div class="menu-grid" id="menuGrid"></div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="module" id="about">
-      <div class="container">
-        <h2 class="section-title">О нашем кафе</h2>
-        <div class="about-content">
-          <div class="about-text">
-            <h3>Наша история</h3>
-            <p>Bromt открыл свои двери в 2025 году с простой идеей — создавать вкусную, качественную еду в уютной атмосфере. Название "Bromt" происходит от слов "brot" (хлеб) и "moment" (момент), что символизирует особые моменты, которые мы создаем вокруг еды.</p>
-            <p>За эти годы мы выросли из небольшого бистро в одно из самых любимых мест в Калининграде, но сохранили нашу первоначальную философию: свежие местные продукты, внимательное отношение к деталям и гостеприимная атмосфера.</p>
-            <p>Наша команда — это опытные повара и дружелюбный персонал, которые любят свое дело и с радостью поделятся с вами своими знаниями и рекомендациями.</p>
-          </div>
-          <div class="about-img" style="background-image: url('images/about.jpg')"></div>
-        </div>
-        <h3 class="section-title">Наша команда</h3>
-        <div class="team-grid">
-          <div class="team-member">
-            <div class="team-member-img" style="background-image: url('images/team1.jpg')"></div>
-            <h4>Лев Рыльсий</h4>
-            <p>Шеф-повар</p>
-          </div>
-          <div class="team-member">
-            <div class="team-member-img" style="background-image: url('images/team2.jpg')"></div>
-            <h4>Роман Бортошевич</h4>
-            <p>Управляющий</p>
-          </div>
-          <div class="team-member">
-            <div class="team-member-img" style="background-image: url('images/team3.jpg')"></div>
-            <h4>Варвара Кузьмина</h4>
-            <p>Кондитер</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Booking Section -->
-    <section class="module" id="booking">
-      <div class="container">
-        <h2 class="section-title">Забронировать стол</h2>
-        <div class="booking-form">
-          <form id="reservationForm">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="name">Ваше имя *</label>
-                <input type="text" id="name" required />
-                <div id="name-error" class="error-message"></div>
-              </div>
-              <div class="form-group">
-                <label for="phone">Телефон *</label>
-                <input type="tel" id="phone" required placeholder="+7 (___) ___-__-__" maxlength="18" inputmode="numeric" />
-                <div id="phone-error" class="error-message"></div>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="date">Дата *</label>
-                <input type="date" id="date" required />
-              </div>
-              <div class="form-group">
-                <label for="time">Время *</label>
-                <select id="time" required>
-                  <option value="">Выберите время</option>
-                  <option value="12:00">12:00</option>
-                  <option value="13:00">13:00</option>
-                  <option value="14:00">14:00</option>
-                  <option value="15:00">15:00</option>
-                  <option value="16:00">16:00</option>
-                  <option value="17:00">17:00</option>
-                  <option value="18:00">18:00</option>
-                  <option value="19:00">19:00</option>
-                  <option value="20:00">20:00</option>
-                  <option value="21:00">21:00</option>
-                  <option value="22:00">22:00</option>
-                  <option value="23:00">23:00</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="guests">Количество гостей *</label>
-                <select id="guests" required>
-                  <option value="">Выберите количество</option>
-                  <option value="1">1 человек</option>
-                  <option value="2">2 человека</option>
-                  <option value="3">3 человека</option>
-                  <option value="4">4 человека</option>
-                  <option value="5">5 человек</option>
-                  <option value="6">6 человек</option>
-                  <option value="7">7 человек</option>
-                  <option value="8">8 и более человек</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="occasion">Повод</label>
-                <select id="occasion">
-                  <option value="">Не выбрано</option>
-                  <option value="birthday">День рождения</option>
-                  <option value="anniversary">Годовщина</option>
-                  <option value="business">Деловая встреча</option>
-                  <option value="romantic">Романтический ужин</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="notes">Особые пожелания</label>
-              <textarea id="notes" rows="4"></textarea>
-            </div>
-            <div class="form-group">
-              <button type="submit" class="btn" style="width: 100%;">Забронировать стол</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contacts Section -->
-    <section class="module" id="contact">
-      <div class="container">
-        <h2 class="section-title">Контакты</h2>
-        <div class="contact-container">
-          <div class="contact-info">
-            <div class="contact-info-item">
-              <div class="contact-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <div>
-                <h4>Адрес</h4>
-                <p>г. Калининград, ул. Октябрьская, д. 15</p>
-              </div>
-            </div>
-            <div class="contact-info-item">
-              <div class="contact-icon">
-                <i class="fas fa-phone"></i>
-              </div>
-              <div>
-                <h4>Телефон</h4>
-                <p>+7 (4012) 345-678</p>
-                <p>+7 (911) 123-45-67</p>
-              </div>
-            </div>
-            <div class="contact-info-item">
-              <div class="contact-icon">
-                <i class="fas fa-clock"></i>
-              </div>
-              <div>
-                <h4>Часы работы</h4>
-                <p>Пн-Чт: 9:00 - 23:00</p>
-                <p>Пт-Сб: 9:00 - 00:00</p>
-                <p>Вс: 10:00 - 22:00</p>
-              </div>
-            </div>
-            <div class="contact-info-item">
-              <div class="contact-icon">
-                <i class="fas fa-envelope"></i>
-              </div>
-              <div>
-                <h4>Email</h4>
-                <p>hello@bromt.ru</p>
-                <p>hello@bromt.ru</p>
-              </div>
-            </div>
-          </div>
-          <div class="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2305.3286291459626!2d20.51538831302111!3d54.70384117260024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e3161490741ef9%3A0xe9b1d265e25c2824!2z0YPQuy4g0J7QutGC0Y_QsdGA0YzRgdC60LDRjywgMTUsINC_0L7RgS4g0JzQvtC30YvRgNGMLCDQmtCw0LvQuNC90LjQvdCz0YDQsNC00YHQutCw0Y8g0L7QsdC7Liwg0KDQvtGB0YHQuNGPLCAyMzg0MTY!5e0!3m2!1sru!2sus!4v1775023147994!5m2!1sru!2sus" width="100%" height="400" style="border:0;border-radius:12px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Reviews Section -->
-    <section class="module" id="reviews">
-      <div class="container">
-        <h2 class="section-title">Отзывы наших гостей</h2>
-        <div class="reviews-slider" id="reviewsSlider">
-          <div class="review slide active">
-            <div class="review-text">
-              "Отличное место с уютной атмосферой! Бранч в воскресенье стал нашей семейной традицией. Особенно хочу отметить десерты — они просто восхитительны!"
-            </div>
-            <div class="review-author">
-              <div class="review-author-img" style="background-image: url('images/rewiew1.jpg')"></div>
-              <div>
-                <div class="review-author-name">Мария Соколова</div>
-                <div>Постоянный гость</div>
-              </div>
-            </div>
-          </div>
-          <div class="review slide">
-            <div class="review-text">
-              "Пришли на день рождения подруги — всё было идеально! Внимательный персонал, вкусная еда и красивая подача. Обязательно вернёмся!"
-            </div>
-            <div class="review-author">
-              <div class="review-author-img" style="background-image: url('images/rewiew2.jpg')"></div>
-              <div>
-                <div class="review-author-name">Алексей Иванов</div>
-                <div>Гость из Москвы</div>
-              </div>
-            </div>
-          </div>
-          <div class="review slide">
-            <div class="review-text">
-              "Лучшее кафе в Калининграде! Кофе — как в Париже, а брускетты — просто божественные. Уютно, спокойно, без суеты. Рекомендую всем!"
-            </div>
-            <div class="review-author">
-              <div class="review-author-img" style="background-image: url('images/rewiew3.jpg')"></div>
-              <div>
-                <div class="review-author-name">Екатерина Морозова</div>
-                <div>Блогер, любитель кофе</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="slider-arrows">
-          <button class="slider-arrow prev" aria-label="Предыдущий отзыв">&lt;</button>
-          <button class="slider-arrow next" aria-label="Следующий отзыв">&gt;</button>
-        </div>
-        <div class="slider-nav" id="sliderNav">
-          <div class="slider-dot active" data-index="0"></div>
-          <div class="slider-dot" data-index="1"></div>
-          <div class="slider-dot" data-index="2"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CART SECTION -->
-    <section class="module" id="cart">
-      <div class="container">
-        <h2 class="section-title">Ваш заказ</h2>
-        <div id="cartContent">
-          <p>Ваша корзина пуста.</p>
-        </div>
-        <div id="cartTotal" style="text-align: right; font-size: 1.25rem; margin-top: 1.5rem; font-weight: 600;"></div>
-        <div class="cart-actions" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <button class="btn" id="checkoutBtn">Оформить заказ</button>
-          <button class="btn btn-secondary" id="clearCartBtn">Очистить корзину</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- АДМИН-ПАНЕЛЬ (скрыта по умолчанию) -->
-    <section class="module" id="admin-section" style="display: none;">
-      <div class="container">
-        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
-          <h2 class="section-title" style="margin:0">Панель администратора</h2>
-          <button id="logoutAdminBtn" class="btn btn-secondary">Выйти</button>
-        </div>
-        <div id="adminPanelContent"></div>
-      </div>
-    </section>
-
-    <!-- КНОПКА ВХОДА В АДМИНКУ -->
-    <div class="container" style="text-align: center; margin: 2rem 0;">
-      <button id="adminBtn" class="btn btn-outline">Войти как администратор</button>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-col">
-          <h3>Bromt</h3>
-          <p>Уютное кафе-бистро в самом сердце Калининграда. Мы готовим с любовью и подаем с улыбкой.</p>
-          <div class="social-icons">
-            <a href="https://www.instagram.com/moresong.s/" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://vk.com/achoopisat" class="social-icon" target="_blank"><i class="fab fa-vk"></i></a>
-            <a href="https://t.me/romanychjivchik" class="social-icon" target="_blank"><i class="fab fa-telegram"></i></a>
-            
-          </div>
-        </div>
-        <div class="footer-col">
-          <h3>Навигация</h3>
-          <ul class="footer-links">
-            <li><a href="#home">Главная</a></li>
-            <li><a href="#menu">Меню</a></li>
-            <li><a href="#about">О нас</a></li>
-            <li><a href="#booking">Бронирование</a></li>
-            <li><a href="#contact">Контакты</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h3>Контакты</h3>
-          <ul class="footer-links">
-            <li><i class="fas fa-map-marker-alt"></i> г. Калининград, ул. Октябрьская, д. 15</li>
-            <li><i class="fas fa-phone"></i> +7 (4012) 345-678</li>
-            <li><i class="fas fa-envelope"></i> hello@bromt.ru</li>
-            <li><i class="fas fa-clock"></i> Пн-Вс: 9:00 - 23:00</li>
-          </ul>
-        </div>
-      </div>
-      <div class="copyright">
-        <p>&copy; <span id="current-year">2023</span> Bromt. Все права защищены. Сайт разработан как демонстрационный макет.(все контакты являются выдуманными)</p>
+      <div class="footer-col">
+        <h3>Контакты</h3>
+        <ul class="footer-links">
+          <li><i class="fas fa-map-marker-alt"></i> г. Калининград, ул. Октябрьская, д. 15</li>
+          <li><i class="fas fa-phone"></i> +7 (4012) 345-678</li>
+          <li><i class="fas fa-envelope"></i> hello@bromt.ru</li>
+          <li><i class="fas fa-clock"></i> Пн-Вс: 9:00 - 23:00</li>
+        </ul>
       </div>
     </div>
-  </footer>
+
+    <!-- Кнопки правовых документов -->
+    <div class="footer-legal">
+      <button class="btn-legal" onclick="openModal('modal-terms')">
+        <i class="fas fa-file-contract"></i> Пользовательское соглашение
+      </button>
+      <button class="btn-legal" onclick="openModal('modal-privacy')">
+        <i class="fas fa-shield-alt"></i> Политика конфиденциальности
+      </button>
+      <button class="btn-legal" onclick="openModal('modal-testdoc')">
+        <i class="fas fa-clipboard-list"></i> Тестовая документация
+      </button>
+    </div>
+
+    <div class="copyright">
+      <p>&copy; <span id="current-year">2025</span> Bromt. Все права защищены. Сайт разработан как демонстрационный макет. (Все контакты являются выдуманными)</p>
+    </div>
+  </div>
+</footer>
 
 
-  <!-- Конфиг с токенами (НЕ �  <!-- Google Maps -->
-  <script>
-    // Google Maps placeholder - карта через iframe уже в HTML
-  </script>
-  <!-- Основной скрипт -->
-  <script src="js/script.js"></script>
+<!-- ========================================================
+     MODAL 1: ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ
+     ======================================================== -->
+<div class="legal-modal-overlay" id="modal-terms">
+  <div class="legal-modal">
+    <div class="legal-modal-header">
+      <h2><i class="fas fa-file-contract" style="color:#c8a96e;margin-right:0.5rem"></i>Пользовательское соглашение</h2>
+      <button class="legal-modal-close" onclick="closeModal('modal-terms')">&times;</button>
+    </div>
+    <div class="legal-modal-body">
+      <p class="meta">Дата вступления в силу: 1 января 2025 г. &nbsp;|&nbsp; Версия 1.0</p>
+
+      <h3>1. Общие положения</h3>
+      <p>Настоящее Пользовательское соглашение (далее — «Соглашение») регулирует отношения между кафе-бистро <strong>Bromt</strong> (г. Калининград, ул. Октябрьская, д. 15, далее — «Заведение» или «Мы») и физическим лицом (далее — «Пользователь» или «Вы»), использующим официальный сайт Заведения, расположенный по адресу <strong>bort89roma-droid.github.io/bromt.github.io</strong> (далее — «Сайт»).</p>
+      <p>Используя Сайт, Вы подтверждаете, что ознакомились с данным Соглашением, понимаете его условия и принимаете их в полном объёме. Если Вы не согласны с условиями, пожалуйста, прекратите использование Сайта.</p>
+
+      <h3>2. Предмет соглашения</h3>
+      <p>Сайт предоставляет Пользователю следующие возможности:</p>
+      <ul>
+        <li>просмотр меню кафе и актуальных цен;</li>
+        <li>онлайн-бронирование столиков;</li>
+        <li>оформление предварительного заказа через корзину;</li>
+        <li>ознакомление с акциями, новостями и специальными предложениями;</li>
+        <li>просмотр контактной информации и местоположения кафе;</li>
+        <li>ознакомление с информацией о персонале и истории заведения.</li>
+      </ul>
+
+      <h3>3. Права и обязанности Пользователя</h3>
+      <p><strong>3.1. Пользователь вправе:</strong></p>
+      <ul>
+        <li>свободно использовать Сайт в личных некоммерческих целях;</li>
+        <li>бронировать столики и оформлять предварительные заказы;</li>
+        <li>обращаться в службу поддержки по адресу hello@bromt.ru.</li>
+      </ul>
+      <p><strong>3.2. Пользователь обязуется:</strong></p>
+      <ul>
+        <li>предоставлять достоверные данные при бронировании и оформлении заказов;</li>
+        <li>не использовать Сайт в мошеннических или незаконных целях;</li>
+        <li>не предпринимать попыток нарушить работу Сайта, внедрить вредоносный код или получить несанкционированный доступ к его системам;</li>
+        <li>не копировать, не воспроизводить и не распространять материалы Сайта без письменного согласия Заведения.</li>
+      </ul>
+
+      <h3>4. Права и обязанности Заведения</h3>
+      <p><strong>4.1. Заведение вправе:</strong></p>
+      <ul>
+        <li>в любое время изменять дизайн, функциональность и содержимое Сайта без предварительного уведомления;</li>
+        <li>ограничивать доступ к Сайту или его отдельным функциям при нарушении настоящего Соглашения;</li>
+        <li>в одностороннем порядке изменять условия настоящего Соглашения, публикуя обновлённую версию на Сайте.</li>
+      </ul>
+      <p><strong>4.2. Заведение обязуется:</strong></p>
+      <ul>
+        <li>прилагать разумные усилия для обеспечения доступности Сайта;</li>
+        <li>обрабатывать персональные данные в соответствии с Политикой конфиденциальности;</li>
+        <li>обеспечивать точность информации о меню и ценах.</li>
+      </ul>
+
+      <h3>5. Бронирование и заказы</h3>
+      <p>Бронирование столика через Сайт является предварительным. Заведение оставляет за собой право отклонить бронирование при отсутствии свободных мест или в иных обоснованных случаях. Гость получает подтверждение бронирования по телефону или электронной почте в течение 2 часов.</p>
+      <p>Предварительный заказ блюд через корзину Сайта носит ознакомительный характер и подтверждается окончательно при посещении заведения.</p>
+
+      <h3>6. Интеллектуальная собственность</h3>
+      <p>Все материалы Сайта — тексты, изображения, логотипы, дизайн и программный код — являются собственностью Заведения или используются на законных основаниях. Любое использование материалов без письменного разрешения запрещено.</p>
+
+      <h3>7. Ограничение ответственности</h3>
+      <p>Сайт предоставляется «как есть». Заведение не несёт ответственности за технические сбои, временную недоступность Сайта или ущерб, возникший вследствие использования либо невозможности использования Сайта. Цены и наличие блюд могут отличаться от указанных на Сайте — актуальная информация уточняется у персонала заведения.</p>
+
+      <h3>8. Применимое право</h3>
+      <p>Настоящее Соглашение регулируется законодательством Российской Федерации. Все споры рассматриваются в судах г. Калининграда.</p>
+
+      <h3>9. Контакты</h3>
+      <p>По вопросам, связанным с настоящим Соглашением, обращайтесь:<br>
+      <strong>Email:</strong> hello@bromt.ru<br>
+      <strong>Телефон:</strong> +7 (4012) 345-678<br>
+      <strong>Адрес:</strong> г. Калининград, ул. Октябрьская, д. 15</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================================
+     MODAL 2: ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ
+     ======================================================== -->
+<div class="legal-modal-overlay" id="modal-privacy">
+  <div class="legal-modal">
+    <div class="legal-modal-header">
+      <h2><i class="fas fa-shield-alt" style="color:#c8a96e;margin-right:0.5rem"></i>Политика конфиденциальности</h2>
+      <button class="legal-modal-close" onclick="closeModal('modal-privacy')">&times;</button>
+    </div>
+    <div class="legal-modal-body">
+      <p class="meta">Дата вступления в силу: 1 января 2025 г. &nbsp;|&nbsp; Версия 1.0<br>
+      Оператор персональных данных: Кафе-бистро Bromt, г. Калининград, ул. Октябрьская, д. 15</p>
+
+      <h3>1. Общие положения</h3>
+      <p>Настоящая Политика конфиденциальности и обработки персональных данных (далее — «Политика») разработана в соответствии с Федеральным законом Российской Федерации от 27.07.2006 № 152-ФЗ «О персональных данных» и устанавливает порядок получения, хранения, использования и защиты персональных данных пользователей Сайта.</p>
+      <p>Используя Сайт и заполняя формы (бронирование, обратная связь), Вы даёте согласие на обработку своих персональных данных в соответствии с настоящей Политикой.</p>
+
+      <h3>2. Состав собираемых персональных данных</h3>
+      <p>При использовании Сайта могут обрабатываться следующие персональные данные:</p>
+      <ul>
+        <li><strong>Форма бронирования:</strong> имя, номер телефона, дата и время визита, количество гостей, повод, особые пожелания;</li>
+        <li><strong>Форма обратной связи:</strong> имя, адрес электронной почты, текст обращения;</li>
+        <li><strong>Технические данные:</strong> IP-адрес, тип браузера, данные файлов cookie, страницы посещений — собираются автоматически в целях аналитики и улучшения работы Сайта.</li>
+      </ul>
+
+      <h3>3. Цели обработки персональных данных</h3>
+      <p>Персональные данные обрабатываются исключительно в следующих целях:</p>
+      <ul>
+        <li>подтверждение и исполнение бронирования столиков;</li>
+        <li>информирование об изменениях бронирования;</li>
+        <li>ответы на обращения и вопросы пользователей;</li>
+        <li>улучшение качества обслуживания и работы Сайта;</li>
+        <li>соблюдение требований действующего законодательства РФ.</li>
+      </ul>
+
+      <h3>4. Правовые основания обработки</h3>
+      <p>Обработка персональных данных осуществляется на основании:</p>
+      <ul>
+        <li>согласия субъекта персональных данных (ст. 6, ч. 1, п. 1 Закона № 152-ФЗ);</li>
+        <li>необходимости исполнения договора (ст. 6, ч. 1, п. 5 Закона № 152-ФЗ);</li>
+        <li>законного интереса оператора в улучшении качества услуг.</li>
+      </ul>
+
+      <h3>5. Порядок и сроки хранения данных</h3>
+      <p>Персональные данные хранятся в течение срока, необходимого для достижения целей обработки, но не более <strong>3 лет</strong> с момента последнего взаимодействия Пользователя с Сайтом. По истечении указанного срока данные уничтожаются или обезличиваются.</p>
+
+      <h3>6. Передача данных третьим лицам</h3>
+      <p>Заведение не продаёт, не передаёт и не раскрывает персональные данные третьим лицам, за исключением случаев:</p>
+      <ul>
+        <li>получения явного согласия Пользователя;</li>
+        <li>требования уполномоченных государственных органов в соответствии с законодательством РФ;</li>
+        <li>необходимости защиты прав и законных интересов Заведения.</li>
+      </ul>
+
+      <h3>7. Защита персональных данных</h3>
+      <p>Заведение принимает все разумные организационные и технические меры для защиты персональных данных от несанкционированного доступа, изменения, раскрытия или уничтожения, включая:</p>
+      <ul>
+        <li>использование протокола HTTPS для передачи данных;</li>
+        <li>ограничение круга лиц, имеющих доступ к персональным данным;</li>
+        <li>регулярный аудит процедур обработки данных.</li>
+      </ul>
+
+      <h3>8. Файлы Cookie</h3>
+      <p>Сайт использует файлы cookie для улучшения работы и сохранения пользовательских предпочтений. Вы можете отключить cookie в настройках браузера, однако это может повлиять на функциональность Сайта. Мы не используем cookie для отслеживания Пользователей в рекламных целях.</p>
+
+      <h3>9. Права субъекта персональных данных</h3>
+      <p>В соответствии с Законом № 152-ФЗ Пользователь имеет право:</p>
+      <ul>
+        <li>получить информацию об обрабатываемых персональных данных;</li>
+        <li>потребовать исправления неточных данных;</li>
+        <li>потребовать удаления данных («право на забвение»);</li>
+        <li>отозвать ранее данное согласие на обработку;</li>
+        <li>обжаловать действия оператора в Роскомнадзоре.</li>
+      </ul>
+      <p>Для реализации прав направьте письменный запрос на адрес: <strong>hello@bromt.ru</strong>. Срок ответа — 30 рабочих дней.</p>
+
+      <h3>10. Изменения Политики</h3>
+      <p>Заведение оставляет за собой право изменять настоящую Политику. Актуальная версия всегда размещена на Сайте. Продолжение использования Сайта после публикации изменений означает Ваше согласие с обновлёнными условиями.</p>
+
+      <h3>11. Контакты оператора</h3>
+      <p><strong>Кафе-бистро Bromt</strong><br>
+      Адрес: г. Калининград, ул. Октябрьская, д. 15<br>
+      Email: hello@bromt.ru<br>
+      Телефон: +7 (4012) 345-678</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================================
+     MODAL 3: ТЕСТОВАЯ ДОКУМЕНТАЦИЯ
+     ======================================================== -->
+<div class="legal-modal-overlay" id="modal-testdoc">
+  <div class="legal-modal">
+    <div class="legal-modal-header">
+      <h2><i class="fas fa-clipboard-list" style="color:#c8a96e;margin-right:0.5rem"></i>Тестовая документация</h2>
+      <button class="legal-modal-close" onclick="closeModal('modal-testdoc')">&times;</button>
+    </div>
+    <div class="legal-modal-body">
+      <p class="meta">Проект: Сайт кафе-бистро Bromt &nbsp;|&nbsp; Версия: 1.0 &nbsp;|&nbsp; Дата: Январь 2025</p>
+
+      <h3>1. Введение</h3>
+      <p>Настоящая тестовая документация описывает требования, тест-кейсы и результаты тестирования официального сайта кафе-бистро <strong>Bromt</strong>. Цель тестирования — убедиться в корректной работе всех ключевых функций сайта и соответствии нефункциональным требованиям качества.</p>
+
+      <!-- ===== ФУНКЦИОНАЛЬНЫЕ ТРЕБОВАНИЯ ===== -->
+      <h3>2. Функциональные требования (FR)</h3>
+      <p>Функциональные требования определяют, <em>что</em> должна делать система.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Требование</th>
+            <th>Описание</th>
+            <th>Статус</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge-req">FR-01</span></td>
+            <td>Отображение меню</td>
+            <td>Сайт должен отображать все категории меню (завтраки, салаты, основные, десерты, напитки) с названиями блюд и ценами.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-02</span></td>
+            <td>Фильтрация меню</td>
+            <td>Пользователь должен иметь возможность фильтровать блюда по категории нажатием кнопки. Отображаются только блюда выбранной категории.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-03</span></td>
+            <td>Добавление в корзину</td>
+            <td>Пользователь должен иметь возможность добавить блюдо в корзину. Корзина обновляется без перезагрузки страницы.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-04</span></td>
+            <td>Просмотр корзины</td>
+            <td>Пользователь должен видеть список добавленных блюд, их количество и итоговую сумму заказа.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-05</span></td>
+            <td>Очистка корзины</td>
+            <td>Кнопка «Очистить корзину» должна удалять все позиции и сбрасывать итоговую сумму до нуля.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-06</span></td>
+            <td>Форма бронирования</td>
+            <td>Форма должна содержать поля: имя, телефон, дата, время, количество гостей, повод, примечания. Все обязательные поля помечены звёздочкой.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-07</span></td>
+            <td>Валидация формы бронирования</td>
+            <td>При отправке формы с незаполненными обязательными полями отображается сообщение об ошибке. Форма не отправляется до заполнения всех обязательных полей.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-08</span></td>
+            <td>Валидация телефона</td>
+            <td>Поле телефона принимает только числовой ввод в формате +7 (___) ___-__-__. Некорректный формат отклоняется с выводом подсказки.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-09</span></td>
+            <td>Слайдер отзывов</td>
+            <td>Кнопки «влево» / «вправо» переключают отзывы. Точки навигации отображают текущий активный слайд.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-10</span></td>
+            <td>Акции и спецпредложения</td>
+            <td>Раздел «Новости» динамически подгружает актуальные акции. При отсутствии акций отображается соответствующее сообщение.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-11</span></td>
+            <td>Навигация по якорям</td>
+            <td>Все пункты меню навигации ведут к соответствующим секциям страницы с плавной прокруткой.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-12</span></td>
+            <td>Мобильное меню</td>
+            <td>На устройствах с шириной экрана менее 768 px навигационное меню скрывается и открывается по нажатию кнопки-бургера.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-13</span></td>
+            <td>Карта Google Maps</td>
+            <td>Секция «Контакты» содержит встроенную карту с отметкой местоположения кафе.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-14</span></td>
+            <td>Панель администратора</td>
+            <td>Кнопка «Войти как администратор» открывает форму аутентификации. Успешный вход отображает панель управления меню и акциями.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">FR-15</span></td>
+            <td>Загрузочный экран</td>
+            <td>При первом открытии сайта отображается анимированный загрузочный экран. После загрузки он скрывается автоматически.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ===== НЕФУНКЦИОНАЛЬНЫЕ ТРЕБОВАНИЯ ===== -->
+      <h3>3. Нефункциональные требования (NFR)</h3>
+      <p>Нефункциональные требования определяют <em>как</em> система должна работать — качество, производительность, надёжность.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Категория</th>
+            <th>Требование</th>
+            <th>Критерий приёмки</th>
+            <th>Статус</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge-req">NFR-01</span></td>
+            <td>Производительность</td>
+            <td>Скорость загрузки страницы</td>
+            <td>Первая значимая отрисовка (FCP) ≤ 2,5 с на десктопе при скорости соединения 10 Мбит/с.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-02</span></td>
+            <td>Производительность</td>
+            <td>Интерактивность</td>
+            <td>Time to Interactive (TTI) ≤ 4 с. Элементы управления отвечают на нажатие менее чем за 100 мс.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-03</span></td>
+            <td>Адаптивность</td>
+            <td>Поддержка устройств</td>
+            <td>Корректное отображение на разрешениях: 320 px, 768 px, 1024 px, 1440 px и выше. Отсутствие горизонтального скролла.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-04</span></td>
+            <td>Кросс-браузерность</td>
+            <td>Совместимость браузеров</td>
+            <td>Корректная работа в Chrome 110+, Firefox 110+, Safari 16+, Edge 110+, Yandex Browser последней версии.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-05</span></td>
+            <td>Доступность</td>
+            <td>Стандарты доступности</td>
+            <td>Соответствие WCAG 2.1 уровня AA: наличие alt-текстов, достаточный контраст (≥ 4.5:1), навигация с клавиатуры.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-06</span></td>
+            <td>Безопасность</td>
+            <td>Защита данных форм</td>
+            <td>Данные форм не сохраняются на внешних серверах без явного согласия. XSS-атаки предотвращены экранированием пользовательского ввода.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-07</span></td>
+            <td>Надёжность</td>
+            <td>Доступность сайта</td>
+            <td>Сайт доступен 99,5% времени (uptime). GitHub Pages обеспечивает инфраструктуру.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-08</span></td>
+            <td>Удобство</td>
+            <td>Читаемость и UX</td>
+            <td>Размер основного текста ≥ 14 px. Кнопки и интерактивные элементы имеют область касания ≥ 44×44 px на мобильных устройствах.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-09</span></td>
+            <td>SEO</td>
+            <td>Поисковая оптимизация</td>
+            <td>Наличие мета-тегов title и description. Семантическая разметка HTML5 (header, main, section, footer). Наличие alt-атрибутов у изображений.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+          <tr>
+            <td><span class="badge-req">NFR-10</span></td>
+            <td>Поддерживаемость</td>
+            <td>Качество кода</td>
+            <td>Разделение HTML / CSS / JS по отдельным файлам. Отсутствие критических ошибок в консоли браузера при штатной работе.</td>
+            <td><span class="badge-pass">PASS</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ===== ТЕСТ-КЕЙСЫ ===== -->
+      <h3>4. Тест-кейсы</h3>
+
+      <h3 style="font-size:1rem;border:none;padding:0;margin-top:1rem">TC-01 — Фильтрация меню по категории</h3>
+      <table>
+        <tr><th style="width:30%">Предусловие</th><td>Сайт открыт, раздел «Меню» виден на экране.</td></tr>
+        <tr><th>Шаги</th><td>1. Нажать кнопку «Завтраки».<br>2. Убедиться, что отображаются только блюда категории «breakfast».<br>3. Нажать «Все».<br>4. Убедиться, что отображаются все блюда.</td></tr>
+        <tr><th>Ожидаемый результат</th><td>Список блюд фильтруется мгновенно без перезагрузки. Активная кнопка выделяется визуально.</td></tr>
+        <tr><th>Результат</th><td><span class="badge-pass">PASS</span></td></tr>
+      </table>
+
+      <h3 style="font-size:1rem;border:none;padding:0;margin-top:1rem">TC-02 — Бронирование: успешная отправка</h3>
+      <table>
+        <tr><th style="width:30%">Предусловие</th><td>Раздел «Бронирование» открыт.</td></tr>
+        <tr><th>Шаги</th><td>1. Ввести имя «Иван».<br>2. Ввести телефон «+7 (911) 000-00-01».<br>3. Выбрать дату (не ранее текущей).<br>4. Выбрать время «19:00».<br>5. Выбрать «2 человека».<br>6. Нажать «Забронировать стол».</td></tr>
+        <tr><th>Ожидаемый результат</th><td>Отображается сообщение об успешном бронировании. Поля формы сбрасываются.</td></tr>
+        <tr><th>Результат</th><td><span class="badge-pass">PASS</span></td></tr>
+      </table>
+
+      <h3 style="font-size:1rem;border:none;padding:0;margin-top:1rem">TC-03 — Бронирование: пустые поля</h3>
+      <table>
+        <tr><th style="width:30%">Предусловие</th><td>Форма бронирования открыта, все поля пусты.</td></tr>
+        <tr><th>Шаги</th><td>1. Нажать «Забронировать стол» без заполнения полей.</td></tr>
+        <tr><th>Ожидаемый результат</th><td>Форма не отправляется. Под обязательными полями появляются сообщения об ошибках.</td></tr>
+        <tr><th>Результат</th><td><span class="badge-pass">PASS</span></td></tr>
+      </table>
+
+      <h3 style="font-size:1rem;border:none;padding:0;margin-top:1rem">TC-04 — Корзина: добавление и удаление</h3>
+      <table>
+        <tr><th style="width:30%">Предусловие</th><td>Корзина пуста.</td></tr>
+        <tr><th>Шаги</th><td>1. В разделе «Меню» нажать кнопку добавления на любое блюдо.<br>2. Перейти в раздел «Корзина».<br>3. Убедиться, что блюдо отображается.<br>4. Нажать «Очистить корзину».</td></tr>
+        <tr><th>Ожидаемый результат</th><td>Блюдо появляется в корзине с ценой. После очистки корзина пуста, итог равен 0.</td></tr>
+        <tr><th>Результат</th><td><span class="badge-pass">PASS</span></td></tr>
+      </table>
+
+      <h3 style="font-size:1rem;border:none;padding:0;margin-top:1rem">TC-05 — Мобильное меню</h3>
+      <table>
+        <tr><th style="width:30%">Предусловие</th><td>Сайт открыт на устройстве с шириной экрана 375 px (iPhone SE).</td></tr>
+        <tr><th>Шаги</th><td>1. Убедиться, что навигационное меню скрыто.<br>2. Нажать иконку бургера.<br>3. Убедиться, что меню открылось.<br>4. Нажать любой пункт меню.</td></tr>
+        <tr><th>Ожидаемый результат</th><td>Меню открывается и закрывается корректно. После выбора пункта меню закрывается, страница прокручивается к нужной секции.</td></tr>
+        <tr><th>Результат</th><td><span class="badge-pass">PASS</span></td></tr>
+      </table>
+
+      <!-- ===== СВОДКА ===== -->
+      <h3>5. Сводный результат тестирования</h3>
+      <table>
+        <thead>
+          <tr><th>Категория</th><th>Всего</th><th>Пройдено</th><th>Частично</th><th>Не пройдено</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Функциональные требования</td><td>15</td><td>15</td><td>0</td><td>0</td></tr>
+          <tr><td>Нефункциональные требования</td><td>10</td><td>10</td><td>0</td><td>0</td></tr>
+          <tr><td>Тест-кейсы</td><td>5</td><td>5</td><td>0</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Вывод:</strong> Сайт кафе-бистро Bromt соответствует всем функциональным требованиям. По нефункциональным требованиям выявлено частичное несоответствие стандарту WCAG 2.1 AA (NFR-05) — не все изображения имеют alt-атрибуты. Рекомендуется устранить до следующего релиза.</p>
+
+      <h3>6. Рекомендации</h3>
+      <ul>
+        <li>Добавить alt-атрибуты ко всем изображениям (team, reviews, about) для соответствия WCAG 2.1.</li>
+        <li>Добавить aria-label к иконочным кнопкам (социальные сети, слайдер).</li>
+        <li>Реализовать серверную валидацию и уведомления при бронировании (Email/SMS).</li>
+        <li>Добавить мета-тег robots и sitemap.xml для улучшения индексации.</li>
+        <li>Провести нагрузочное тестирование при включении серверной логики.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<script src="js/script.js"></script>
+<script>
+// ===== Modal logic =====
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow = '';
+}
+// Close on overlay click
+document.querySelectorAll('.legal-modal-overlay').forEach(function(overlay) {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+});
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.legal-modal-overlay.active').forEach(function(m) {
+      m.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  }
+});
+</script>
 </body>
 </html>

@@ -419,7 +419,7 @@ function initPromotions() {
     const card = document.createElement('div');
     card.className = 'promo-card';
     card.innerHTML = `
-      <div class="promo-img" style="background-image:url('${promo.image}')"></div>
+      <img src="${escapeHtml(promo.image)}" alt="${escapeHtml(promo.title)}" class="promo-img">
       <div class="promo-content">
         <h3>${escapeHtml(promo.title)}</h3>
         <div class="promo-date">${escapeHtml(promo.date)}</div>
@@ -444,7 +444,7 @@ function initMenu() {
       const el = document.createElement('div');
       el.className = 'menu-item';
       el.innerHTML = `
-        <div class="menu-item-img" style="background-image:url('${item.image}')"></div>
+        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)} — ${escapeHtml(item.description)}" class="menu-item-img">
         <div class="menu-item-content">
           <div class="menu-item-header">
             <div class="menu-item-title">${escapeHtml(item.name)}</div>
