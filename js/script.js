@@ -482,13 +482,59 @@ function initBookingForm() {
 
   const phoneInput = document.getElementById('phone');
   const phoneError = document.getElementById('phone-error');
+  const nameInput  = document.getElementById('name');
+  const nameError  = document.getElementById('name-error');
 
   function validatePhone() {
     if (!phoneInput || !phoneError) return true;
     const digits  = phoneInput.value.replace(/\D/g, '');
-    const isValid = digits.length === 11;
-    phoneError.textContent = (!isValid && digits.length > 0) ? 'Номер не дописан' : '';
+    const isValid = digits.length === 11 &&
+                    !(/^(.)\1+$/.test(digits)) &&
+                    digits.startsWith('7');
+
+    if (!isValid && digits.length > 0) {
+      if (/^(.)\1+$/.test(digits)) {
+        phoneError.textContent = 'Номер содержит одинаковые цифры';
+      } else if (!digits.startsWith('7')) {
+        phoneError.textContent = 'Номер должен начинаться с 7';
+      } else {
+        phoneError.textContent = 'Номер не дописан';
+      }
+    } else {
+      phoneError.textContent = '';
+    }
     return isValid;
+  }
+
+  function validateName(name) {
+    if (!name || name.length < 2) return false;
+    return !/^\d+$/.test(name) && !/^(.)\1+$/.test(name.replace(/\s/g, ''));
+  }
+
+  function validateNameField() {
+    if (!nameInput || !nameError) return true;
+    const val = nameInput.value.trim();
+    const isValid = validateName(val);
+
+    if (!isValid && val.length > 0) {
+      if (/^\d+$/.test(val)) {
+        nameError.textContent = 'Имя не может содержать только цифры';
+      } else if (/^(.)\1+$/.test(val.replace(/\s/g, ''))) {
+        nameError.textContent = 'Введите корректное имя';
+      } else if (val.length < 2) {
+        nameError.textContent = 'Имя должно содержать минимум 2 символа';
+      }
+    } else {
+      nameError.textContent = '';
+    }
+    return isValid;
+  }
+
+  if (nameInput) {
+    nameInput.addEventListener('blur', validateNameField);
+    nameInput.addEventListener('input', () => {
+      if (nameError.textContent) validateNameField();
+    });
   }
 
   if (phoneInput) {
@@ -522,7 +568,7 @@ function initBookingForm() {
     const guests = document.getElementById('guests').value;
     const notes  = document.getElementById('notes').value;
 
-    if (!name || !validatePhone() || !time || !guests) {
+    if (!name || !validateNameField() || !validatePhone() || !time || !guests) {
       alert('Пожалуйста, заполните все обязательные поля корректно.');
       return;
     }
@@ -532,6 +578,7 @@ function initBookingForm() {
     form.reset();
     dateInput.value = dateInput.min;
     if (phoneError) phoneError.textContent = '';
+    if (nameError) nameError.textContent = '';
   });
 }
 
@@ -545,11 +592,21 @@ function initCart() {
     if (cart.length === 0) { alert('Корзина пуста!'); return; }
 
     const name  = prompt('Ваше имя:');
-    const phone = prompt('Ваш телефон:');
-    const time  = prompt('Желаемое время (например, 19:00):');
-    if (!name || !phone || !time) { alert('Заказ отменён'); return; }
+    if (!name) { alert('Заказ отменён'); return; }
+    if (!validateName(name.trim())) { alert('Введите корректное имя'); return; }
 
-    saveOrder(name, phone, '', time, '—', '');
+    const phone = prompt('Ваш телефон (например, +7 (901) 123-45-67):');
+    if (!phone) { alert('Заказ отменён'); return; }
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (phoneDigits.length !== 11 || /^(.)\1+$/.test(phoneDigits) || !phoneDigits.startsWith('7')) {
+      alert('Введите корректный российский номер телефона');
+      return;
+    }
+
+    const time  = prompt('Желаемое время (например, 19:00):');
+    if (!time || !/^\d{2}:\d{2}$/.test(time)) { alert('Введите время в формате ЧЧ:МММ'); return; }
+
+    saveOrder(name.trim(), phone, '', time, '—', '');
     alert('Спасибо за заказ! Мы скоро свяжемся с вами.');
   });
 
