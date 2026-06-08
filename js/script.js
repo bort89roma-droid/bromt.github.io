@@ -470,6 +470,11 @@ function initMenu() {
 // ============================================================
 //  БРОНИРОВАНИЕ
 // ============================================================
+function validateName(name) {
+  if (!name || name.length < 2) return false;
+  return !/^\d+$/.test(name) && !/^(.)\1+$/.test(name.replace(/\s/g, ''));
+}
+
 function initBookingForm() {
   const form = document.getElementById('reservationForm');
   if (!form) return;
@@ -504,11 +509,6 @@ function initBookingForm() {
       phoneError.textContent = '';
     }
     return isValid;
-  }
-
-  function validateName(name) {
-    if (!name || name.length < 2) return false;
-    return !/^\d+$/.test(name) && !/^(.)\1+$/.test(name.replace(/\s/g, ''));
   }
 
   function validateNameField() {
